@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:latest
+    restart: unless-stopped
+    env_file:
+      - ./secrets/mariadb.env
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - ./mariadb:/var/lib/mysql
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: unless-stopped
+    env_file:
+      - ./secrets/mongodb.env
+    ports:
+      - 127.0.0.1:27017:27017
+    volumes:
+      - ./mongodb:/data/db
+
+  xampp:
+    container_name: xampp
+    image: tomsik68/xampp:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:80:80
+      - 127.0.0.1:443:443
+      - 127.0.0.1:3306:3306
+    volumes:
+      - ./xampp/web_pages:/www
