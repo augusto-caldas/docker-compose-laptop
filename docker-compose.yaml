@@ -6,7 +6,7 @@ services:
     image: mariadb:latest
     restart: unless-stopped
     env_file:
-      - ./secrets/mariadb.env
+      - ./.secrets/mariadb.env
     ports:
       - 127.0.0.1:3306:3306
     volumes:
@@ -17,7 +17,7 @@ services:
     image: mongo:latest
     restart: unless-stopped
     env_file:
-      - ./secrets/mongodb.env
+      - ./.secrets/mongodb.env
     ports:
       - 127.0.0.1:27017:27017
     volumes:
@@ -33,3 +33,13 @@ services:
       - 127.0.0.1:3306:3306
     volumes:
       - ./xampp/web_pages:/www
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:5672:5672
+      - 127.0.0.1:15672:15672
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
