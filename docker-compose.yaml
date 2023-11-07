@@ -23,6 +23,37 @@ services:
     volumes:
       - ./mongodb:/data/db
 
+  wordpressdb:
+    container_name: wordpressdb
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+    env_file:
+      - ./.secrets/wordpressdb.env
+    ports:
+      - 127.0.0.1:3306:3306
+    volumes:
+      - ./wordpress/db:/var/lib/mysql
+  
+  wordpress:
+    container_name: wordpress
+    image: wordpress:latest
+    restart: unless-stopped
+    environment:
+      WORDPRESS_DB_HOST: wordpressdb
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    env_file:
+      - ./.secrets/wordpress.env
+    ports:
+      - 127.0.0.1:8080:80
+    volumes:
+      - ./wordpress/web:/var/www/html
+    depends_on:
+      - wordpressdb
+
   xampp:
     container_name: xampp
     image: tomsik68/xampp:latest
